@@ -1,4 +1,5 @@
 import { TASK_STATUSES, type Task, type TaskStatus } from '../types/task'
+import { apiFetch } from './apiFetch'
 import type { TaskApi, TaskListParams } from './taskApi'
 
 const buildQuery = (params?: TaskListParams) => {
@@ -6,13 +7,6 @@ const buildQuery = (params?: TaskListParams) => {
 
   const usp = new URLSearchParams({ status: params.status })
   return `?${usp.toString()}`
-}
-
-const safeJson = async <T,>(res: Response) => {
-  const text = await res.text()
-  if (!text) return undefined as T
-
-  return JSON.parse(text) as T
 }
 
 const isTaskStatus = (value: unknown): value is TaskStatus => {
@@ -66,53 +60,32 @@ const normalizeTaskList = (raw: unknown): Task[] => {
 
 export const createHttpTaskApi = (baseUrl: string): TaskApi => {
   const list: TaskApi['list'] = async (params) => {
-    const res = await fetch(`${baseUrl}/tasks${buildQuery(params)}`)
-    if (!res.ok) {
-      throw new Error(`Failed to fetch tasks (${res.status})`)
-    }
-
-    const raw = await safeJson<unknown>(res)
+    const raw = await apiFetch<unknown>(`${baseUrl}/tasks${buildQuery(params)}`)
     return normalizeTaskList(raw)
   }
 
   const create: TaskApi['create'] = async (input) => {
-    const res = await fetch(`${baseUrl}/tasks`, {
+    const raw = await apiFetch<unknown>(`${baseUrl}/tasks`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(input),
     })
-
-    if (!res.ok) {
-      throw new Error(`Failed to create task (${res.status})`)
-    }
-
-    const raw = await safeJson<unknown>(res)
     return normalizeTask(raw)
   }
 
   const update: TaskApi['update'] = async (id, patch) => {
-    const res = await fetch(`${baseUrl}/tasks/${id}`, {
+    const raw = await apiFetch<unknown>(`${baseUrl}/tasks/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(patch),
     })
-
-    if (!res.ok) {
-      throw new Error(`Failed to update task (${res.status})`)
-    }
-
-    const raw = await safeJson<unknown>(res)
     return normalizeTask(raw)
   }
 
   const remove: TaskApi['remove'] = async (id) => {
-    const res = await fetch(`${baseUrl}/tasks/${id}`, {
+    await apiFetch<unknown>(`${baseUrl}/tasks/${id}`, {
       method: 'DELETE',
     })
-
-    if (!res.ok) {
-      throw new Error(`Failed to delete task (${res.status})`)
-    }
   }
 
   return {
