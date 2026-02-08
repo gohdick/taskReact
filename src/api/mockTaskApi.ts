@@ -3,13 +3,8 @@ import type { TaskApi, TaskListParams } from './taskApi'
 
 const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms))
 
-const generateId = () => {
-  if (globalThis.crypto && 'randomUUID' in globalThis.crypto) {
-    return globalThis.crypto.randomUUID()
-  }
-
-  return `${Date.now()}-${Math.random().toString(16).slice(2)}`
-}
+let idSeq = 1
+const generateId = () => idSeq++
 
 const nowIso = () => new Date().toISOString()
 
@@ -18,7 +13,7 @@ let tasks: Task[] = [
     id: generateId(),
     title: 'Design UI layout',
     description: 'Simple card list + form',
-    status: 'To Do',
+    status: 'TODO',
     created_at: nowIso(),
     updated_at: nowIso(),
   },
@@ -26,7 +21,7 @@ let tasks: Task[] = [
     id: generateId(),
     title: 'Implement Zustand store',
     description: 'CRUD + filter',
-    status: 'In Progress',
+    status: 'IN_PROGRESS',
     created_at: nowIso(),
     updated_at: nowIso(),
   },
@@ -55,7 +50,7 @@ const create = async (input: TaskCreateInput) => {
     id: generateId(),
     title,
     description: input.description?.trim() || undefined,
-    status: 'To Do',
+    status: input.status ?? 'TODO',
     created_at: nowIso(),
     updated_at: nowIso(),
   }
@@ -65,7 +60,7 @@ const create = async (input: TaskCreateInput) => {
   return task
 }
 
-const update = async (id: string, patch: TaskUpdateInput) => {
+const update = async (id: number, patch: TaskUpdateInput) => {
   await delay(200)
 
   const task = tasks.find((t) => t.id === id)
@@ -94,7 +89,7 @@ const update = async (id: string, patch: TaskUpdateInput) => {
   return next
 }
 
-const remove = async (id: string) => {
+const remove = async (id: number) => {
   await delay(200)
   tasks = tasks.filter((t) => t.id !== id)
 }

@@ -7,6 +7,6 @@ export type TaskListParams = {
 export type TaskApi = {
   list: (params?: TaskListParams) => Promise<Task[]>
   create: (input: TaskCreateInput) => Promise<Task>
-  update: (id: string, patch: TaskUpdateInput) => Promise<Task>
-  remove: (id: string) => Promise<void>
+  update: (id: number, patch: TaskUpdateInput) => Promise<Task>
+  remove: (id: number) => Promise<void>
 }

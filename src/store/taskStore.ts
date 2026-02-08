@@ -13,8 +13,8 @@ type TaskState = {
   setFilterStatus: (status: TaskFilterStatus) => void
   fetchTasks: () => Promise<void>
   createTask: (input: TaskCreateInput) => Promise<void>
-  updateTask: (id: string, patch: TaskUpdateInput) => Promise<void>
-  deleteTask: (id: string) => Promise<void>
+  updateTask: (id: number, patch: TaskUpdateInput) => Promise<void>
+  deleteTask: (id: number) => Promise<void>
 }
 
 export const useTaskStore = create<TaskState>((set, get) => ({
@@ -48,7 +48,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     set({ isLoading: true, error: null })
 
     try {
-      await taskApi.create(input)
+      await taskApi.create({ ...input, status: input.status ?? 'TODO' })
       await get().fetchTasks()
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error'

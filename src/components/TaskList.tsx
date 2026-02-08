@@ -5,8 +5,8 @@ import { TaskCard } from './TaskCard'
 
 type Props = {
   tasks: Task[]
-  onStatusChange: (id: string, status: TaskStatus) => void
-  onDelete: (id: string) => void
+  onStatusChange: (id: number, status: TaskStatus) => void
+  onDelete: (id: number) => void
 }
 
 export const TaskList: FC<Props> = ({ tasks, onStatusChange, onDelete }) => {

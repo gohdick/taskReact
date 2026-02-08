@@ -1,4 +1,4 @@
-import type { Task } from '../types/task'
+import { TASK_STATUSES, type Task, type TaskStatus } from '../types/task'
 import type { TaskApi, TaskListParams } from './taskApi'
 
 const buildQuery = (params?: TaskListParams) => {
@@ -15,6 +15,55 @@ const safeJson = async <T,>(res: Response) => {
   return JSON.parse(text) as T
 }
 
+const isTaskStatus = (value: unknown): value is TaskStatus => {
+  return typeof value === 'string' && (TASK_STATUSES as readonly string[]).includes(value)
+}
+
+const normalizeTask = (raw: unknown): Task => {
+  const resolved =
+    raw && typeof raw === 'object' && 'data' in (raw as Record<string, unknown>)
+      ? (raw as Record<string, unknown>).data
+      : raw
+
+  if (!resolved || typeof resolved !== 'object') {
+    throw new Error('Invalid task payload')
+  }
+
+  const obj = resolved as Record<string, unknown>
+
+  const id = Number(obj.id)
+  if (!Number.isFinite(id)) {
+    throw new Error('Invalid task id')
+  }
+
+  const status = obj.status
+  if (!isTaskStatus(status)) {
+    throw new Error('Invalid task status')
+  }
+
+  const created_at = (obj.created_at ?? obj.createdAt) as string
+  const updated_at = (obj.updated_at ?? obj.updatedAt) as string
+
+  return {
+    id,
+    title: String(obj.title ?? ''),
+    description: (obj.description as string | undefined) ?? undefined,
+    status,
+    created_at,
+    updated_at,
+  }
+}
+
+const normalizeTaskList = (raw: unknown): Task[] => {
+  const resolved =
+    raw && typeof raw === 'object' && 'data' in (raw as Record<string, unknown>)
+      ? (raw as Record<string, unknown>).data
+      : raw
+
+  if (!Array.isArray(resolved)) return []
+  return resolved.map(normalizeTask)
+}
+
 export const createHttpTaskApi = (baseUrl: string): TaskApi => {
   const list: TaskApi['list'] = async (params) => {
     const res = await fetch(`${baseUrl}/tasks${buildQuery(params)}`)
@@ -22,7 +71,8 @@ export const createHttpTaskApi = (baseUrl: string): TaskApi => {
       throw new Error(`Failed to fetch tasks (${res.status})`)
     }
 
-    return safeJson<Task[]>(res)
+    const raw = await safeJson<unknown>(res)
+    return normalizeTaskList(raw)
   }
 
   const create: TaskApi['create'] = async (input) => {
@@ -36,7 +86,8 @@ export const createHttpTaskApi = (baseUrl: string): TaskApi => {
       throw new Error(`Failed to create task (${res.status})`)
     }
 
-    return safeJson<Task>(res)
+    const raw = await safeJson<unknown>(res)
+    return normalizeTask(raw)
   }
 
   const update: TaskApi['update'] = async (id, patch) => {
@@ -50,7 +101,8 @@ export const createHttpTaskApi = (baseUrl: string): TaskApi => {
       throw new Error(`Failed to update task (${res.status})`)
     }
 
-    return safeJson<Task>(res)
+    const raw = await safeJson<unknown>(res)
+    return normalizeTask(raw)
   }
 
   const remove: TaskApi['remove'] = async (id) => {

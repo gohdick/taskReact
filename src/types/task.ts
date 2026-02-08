@@ -1,9 +1,15 @@
-export const TASK_STATUSES = ['To Do', 'In Progress', 'Done'] as const
+export const TASK_STATUSES = ['TODO', 'IN_PROGRESS', 'DONE'] as const
 
 export type TaskStatus = (typeof TASK_STATUSES)[number]
 
+export const TASK_STATUS_LABEL: Record<TaskStatus, string> = {
+  TODO: 'To Do',
+  IN_PROGRESS: 'In Progress',
+  DONE: 'Done',
+}
+
 export type Task = {
-  id: string
+  id: number
   title: string
   description?: string
   status: TaskStatus
@@ -14,6 +20,7 @@ export type Task = {
 export type TaskCreateInput = {
   title: string
   description?: string
+  status?: TaskStatus
 }
 
 export type TaskUpdateInput = {

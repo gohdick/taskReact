@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 
-import { TASK_STATUSES } from '../types/task'
+import { TASK_STATUSES, TASK_STATUS_LABEL, type TaskStatus } from '../types/task'
 import type { TaskFilterStatus } from '../store/taskStore'
 
 type Props = {
@@ -12,16 +12,21 @@ const options: TaskFilterStatus[] = ['All', ...TASK_STATUSES]
 
 const statusStyles: Record<TaskFilterStatus, string> = {
   All: 'bg-slate-100 text-slate-700 hover:bg-slate-200',
-  'To Do': 'bg-slate-100 text-slate-700 hover:bg-slate-200',
-  'In Progress': 'bg-amber-100 text-amber-900 hover:bg-amber-200',
-  Done: 'bg-emerald-100 text-emerald-900 hover:bg-emerald-200',
+  TODO: 'bg-slate-100 text-slate-700 hover:bg-slate-200',
+  IN_PROGRESS: 'bg-amber-100 text-amber-900 hover:bg-amber-200',
+  DONE: 'bg-emerald-100 text-emerald-900 hover:bg-emerald-200',
 }
 
 const activeStyles: Record<TaskFilterStatus, string> = {
   All: 'bg-slate-900 text-white hover:bg-slate-800',
-  'To Do': 'bg-slate-600 text-white hover:bg-slate-500',
-  'In Progress': 'bg-amber-600 text-white hover:bg-amber-500',
-  Done: 'bg-emerald-600 text-white hover:bg-emerald-700',
+  TODO: 'bg-slate-600 text-white hover:bg-slate-500',
+  IN_PROGRESS: 'bg-amber-600 text-white hover:bg-amber-500',
+  DONE: 'bg-emerald-600 text-white hover:bg-emerald-700',
+}
+
+const labelOf = (value: TaskFilterStatus) => {
+  if (value === 'All') return 'All'
+  return TASK_STATUS_LABEL[value as TaskStatus]
 }
 
 export const TaskFilter: FC<Props> = ({ value, onChange }) => {
@@ -36,7 +41,7 @@ export const TaskFilter: FC<Props> = ({ value, onChange }) => {
             value === opt ? activeStyles[opt] : statusStyles[opt]
           }`}
         >
-          {opt}
+          {labelOf(opt)}
         </button>
       ))}
     </div>

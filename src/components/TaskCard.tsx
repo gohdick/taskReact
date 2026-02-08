@@ -2,18 +2,18 @@ import type { FC } from 'react'
 
 import { Trash2 } from 'lucide-react'
 import { formatThaiDateTime } from '../utils/date'
-import { TASK_STATUSES, type Task, type TaskStatus } from '../types/task'
+import { TASK_STATUSES, TASK_STATUS_LABEL, type Task, type TaskStatus } from '../types/task'
 
 type Props = {
   task: Task
-  onStatusChange: (id: string, status: TaskStatus) => void
-  onDelete: (id: string) => void
+  onStatusChange: (id: number, status: TaskStatus) => void
+  onDelete: (id: number) => void
 }
 
 const statusStyles: Record<TaskStatus, string> = {
-  'To Do': 'bg-slate-100 text-slate-700',
-  'In Progress': 'bg-amber-100 text-amber-800',
-  Done: 'bg-emerald-100 text-emerald-800',
+  TODO: 'bg-slate-100 text-slate-700',
+  IN_PROGRESS: 'bg-amber-100 text-amber-800',
+  DONE: 'bg-emerald-100 text-emerald-800',
 }
 
 export const TaskCard: FC<Props> = ({ task, onStatusChange, onDelete }) => {
@@ -24,7 +24,7 @@ export const TaskCard: FC<Props> = ({ task, onStatusChange, onDelete }) => {
           <div className="flex items-center gap-2">
             <h3 className="truncate text-sm font-semibold text-slate-900">{task.title}</h3>
             <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${statusStyles[task.status]}`}>
-              {task.status}
+              {TASK_STATUS_LABEL[task.status]}
             </span>
           </div>
           {task.description ? (
@@ -41,7 +41,7 @@ export const TaskCard: FC<Props> = ({ task, onStatusChange, onDelete }) => {
           >
             {TASK_STATUSES.map((s) => (
               <option key={s} value={s}>
-                {s}
+                {TASK_STATUS_LABEL[s]}
               </option>
             ))}
           </select>
