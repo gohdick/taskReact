@@ -1,5 +1,6 @@
 import type { FC } from 'react'
 
+import { Trash2 } from 'lucide-react'
 import { formatThaiDateTime } from '../utils/date'
 import { TASK_STATUSES, type Task, type TaskStatus } from '../types/task'
 
@@ -44,13 +45,14 @@ export const TaskCard: FC<Props> = ({ task, onStatusChange, onDelete }) => {
               </option>
             ))}
           </select>
-
           <button
             type="button"
-            className="h-9 bg-red-400 rounded-md border border-slate-200 px-3 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900"
             onClick={() => onDelete(task.id)}
+            aria-label="Delete"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md 
+                      text-[#c40c3a] hover:bg-[#c40c3a]/10"
           >
-            Delete
+            <Trash2 size={16} />
           </button>
         </div>
       </div>

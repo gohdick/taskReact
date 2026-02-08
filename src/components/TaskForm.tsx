@@ -95,7 +95,7 @@ export const TaskForm: FC<Props> = ({ isLoading, onCreate }) => {
       <div className="mt-4 flex items-center justify-end">
         <button
           type="submit"
-          className="h-10 rounded-md bg-slate-900 px-4 text-sm font-medium text-white disabled:opacity-50 hover:bg-slate-800"
+          className="h-10 rounded-md bg-[#0eb009] px-4 text-sm font-medium text-white disabled:opacity-50 hover:bg-[#0eb009]/80"
           disabled={isLoading}
         >
           Add task
