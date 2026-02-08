@@ -7,11 +7,6 @@ Task Management UI with CRUD, validation, filter Status
 
 1) Create file `.env`
 
-```env
-VITE_USE_MOCK_API=false
-VITE_API_BASE_URL=http://localhost:3000
-```
-
 2) Run Local
 
 ```bash
@@ -23,21 +18,6 @@ or run with Docker
 
 ```bash
 docker compose up --build
-```
-
-3) Open http://localhost:5173
-
-- **add task** Fill in information Title/Description then click `Add task`
-- **change status** Select status from dropdown on the card
-- **filter task** Click status button
-- **delete task** Click trash button
-
-## Run Locally (no Docker)
-
-### Install
-
-```bash
-npm ci
 ```
 
 ### Start Dev Server

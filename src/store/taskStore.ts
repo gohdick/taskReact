@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { taskApi } from '../api'
 import type { Task, TaskCreateInput, TaskStatus, TaskUpdateInput } from '../types/task'
+import { toast } from 'sonner'
 
 export type TaskFilterStatus = TaskStatus | 'All'
 
@@ -82,6 +83,9 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     try {
       await taskApi.remove(id)
       await get().fetchTasks()
+
+      toast.success('ลบสำเร็จ')
+      
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error'
       set({ tasks: prevTasks, error: message })
