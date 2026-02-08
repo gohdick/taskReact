@@ -19,8 +19,8 @@ const statusStyles: Record<TaskFilterStatus, string> = {
 
 const activeStyles: Record<TaskFilterStatus, string> = {
   All: 'bg-slate-900 text-white hover:bg-slate-800',
-  'To Do': 'bg-slate-900 text-white hover:bg-slate-800',
-  'In Progress': 'bg-amber-500 text-white hover:bg-amber-600',
+  'To Do': 'bg-slate-600 text-white hover:bg-slate-500',
+  'In Progress': 'bg-amber-600 text-white hover:bg-amber-500',
   Done: 'bg-emerald-600 text-white hover:bg-emerald-700',
 }
 
