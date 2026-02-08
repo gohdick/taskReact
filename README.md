@@ -8,6 +8,7 @@ Task Management UI with CRUD, validation, filter Status
 1) Create file `.env`
 
 ```env
+VITE_USE_MOCK_API=false
 VITE_API_BASE_URL=http://localhost:3000
 ```
 
