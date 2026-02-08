@@ -1,5 +1,6 @@
 import type { FC } from 'react'
 
+import { formatThaiDateTime } from '../utils/date'
 import { TASK_STATUSES, type Task, type TaskStatus } from '../types/task'
 
 type Props = {
@@ -28,7 +29,7 @@ export const TaskCard: FC<Props> = ({ task, onStatusChange, onDelete }) => {
           {task.description ? (
             <p className="mt-1 text-sm text-slate-600">{task.description}</p>
           ) : null}
-          <p className="mt-2 text-xs text-slate-400">Updated: {new Date(task.updated_at).toLocaleString()}</p>
+          <p className="mt-2 text-xs text-slate-400">Updated: {formatThaiDateTime(task.updated_at)}</p>
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
@@ -46,7 +47,7 @@ export const TaskCard: FC<Props> = ({ task, onStatusChange, onDelete }) => {
 
           <button
             type="button"
-            className="h-9 rounded-md border border-slate-200 px-3 text-sm text-slate-700 hover:bg-slate-50"
+            className="h-9 bg-red-400 rounded-md border border-slate-200 px-3 text-sm text-slate-700 hover:bg-slate-50 hover:text-slate-900"
             onClick={() => onDelete(task.id)}
           >
             Delete
