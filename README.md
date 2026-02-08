@@ -17,10 +17,9 @@ Task Management UI with CRUD, validation, filter Status
   - If you click `Add task` with missing fields, an error message shows in red under the input
 - **State Management (Zustand)**
   - Central store: `src/store/taskStore.ts`
-- **API layer (mock/real switch)**
-  - Mock API: `src/api/mockTaskApi.ts`
-  - Real API adapter: `src/api/httpTaskApi.ts`
-  - Switch entry: `src/api/index.ts`
+- **API layer (HTTP)**
+  - HTTP API adapter: `src/api/httpTaskApi.ts`
+  - API entry: `src/api/index.ts`
 
 ## Tech Stack
 
@@ -34,7 +33,7 @@ Task Management UI with CRUD, validation, filter Status
 
 - `src/types/task.ts` Task types
 - `src/store/taskStore.ts` Zustand store
-- `src/api/*` API adapters (mock + http)
+- `src/api/*` API adapters
 - `src/components/*` UI components
 - `docker-compose.yml` Docker dev hot reload
 - `Dockerfile` Docker dev image for Vite
@@ -116,13 +115,12 @@ docker compose run --rm web npm install <package-name>
 
 ## Environment Variables
 
-This project can use mock API by default. To connect to a real backend later, create a `.env` file:
+Create a `.env` file:
 
 ```env
-VITE_USE_MOCK_API=false
 VITE_API_BASE_URL=http://localhost:3000
 ```
 
 Notes:
-- When `VITE_USE_MOCK_API=true` (or not set), the app uses the mock adapter
-- When `VITE_USE_MOCK_API=false`, the app calls REST API endpoints like `GET /tasks`, `POST /tasks`, `PUT /tasks/:id`, `DELETE /tasks/:id`
+
+- The app calls REST API endpoints like `GET /tasks`, `POST /tasks`, `PUT /tasks/:id`, `DELETE /tasks/:id`
