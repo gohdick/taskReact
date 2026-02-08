@@ -3,40 +3,33 @@
 Fullstack Developer Test :
 Task Management UI with CRUD, validation, filter Status
 
-## Features
+## HOW TO RUN
 
-- **Task CRUD**
-  - Create task
-  - Update task status
-  - Delete task
-- **Filtering**
-  - Filter by status: `All`, `To Do`, `In Progress`, `Done`
-- **Validation (Zod)**
-  - `Title` required
-  - `Description` required
-  - If you click `Add task` with missing fields, an error message shows in red under the input
-- **State Management (Zustand)**
-  - Central store: `src/store/taskStore.ts`
-- **API layer (HTTP)**
-  - HTTP API adapter: `src/api/httpTaskApi.ts`
-  - API entry: `src/api/index.ts`
+1) Create file `.env`
 
-## Tech Stack
+```env
+VITE_API_BASE_URL=http://localhost:3000
+```
 
-- React + TypeScript + Vite
-- Tailwind CSS
-- Zustand
-- Zod
-- lucide-react
+2) Run Local
 
-## Project Structure (important files)
+```bash
+npm ci
+npm run dev
+```
 
-- `src/types/task.ts` Task types
-- `src/store/taskStore.ts` Zustand store
-- `src/api/*` API adapters
-- `src/components/*` UI components
-- `docker-compose.yml` Docker dev hot reload
-- `Dockerfile` Docker dev image for Vite
+or run with Docker
+
+```bash
+docker compose up --build
+```
+
+3) Open http://localhost:5173
+
+- **add task** Fill in information Title/Description then click `Add task`
+- **change status** Select status from dropdown on the card
+- **filter task** Click status button
+- **delete task** Click trash button
 
 ## Run Locally (no Docker)
 
@@ -56,18 +49,6 @@ Open:
 
 - http://localhost:5173
 
-### Build
-
-```bash
-npm run build
-```
-
-### Preview Production Build
-
-```bash
-npm run preview
-```
-
 ## Run with Docker (Dev + Hot Reload)
 
 ### Prerequisites
@@ -84,43 +65,8 @@ Open:
 
 - http://localhost:5173
 
-After the first build, you can run:
-
-```bash
-docker compose up
-```
-
-### Stop / Start
-
-- Stop (keep containers):
-
-```bash
-docker compose stop
-docker compose start
-```
-
-- Down (stop and remove containers/network; images are kept):
+### Stop
 
 ```bash
 docker compose down
 ```
-
-### Install npm packages using Docker
-
-Recommended when you are running the project in Docker:
-
-```bash
-docker compose run --rm web npm install <package-name>
-```
-
-## Environment Variables
-
-Create a `.env` file:
-
-```env
-VITE_API_BASE_URL=http://localhost:3000
-```
-
-Notes:
-
-- The app calls REST API endpoints like `GET /tasks`, `POST /tasks`, `PUT /tasks/:id`, `DELETE /tasks/:id`
