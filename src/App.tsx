@@ -57,7 +57,7 @@ const App = () => {
               onClick={() => void fetchTasks()}
               disabled={isLoading}
             >
-              {isLoading ? "Loading…" : "Refresh"}
+              {isLoading ? "Loading…" : ""}
             </button>
           </div>
 
